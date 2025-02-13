@@ -1,0 +1,35 @@
+# Diretórios de build
+bin/
+obj/
+
+# Arquivos e pastas gerados pelo Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Arquivos de usuário do Visual Studio
+*.csproj.user
+*.vbproj.user
+
+# Configurações do Rider
+.idea/
+*.sln.iml
+
+# Configurações do VS Code
+.vscode/
+
+# Pacotes NuGet e artefatos de build
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Módulos do Node (caso use algum frontend com Node)
+node_modules/
+
+# Arquivos gerados pelo sistema operacional
+.DS_Store
+Thumbs.db
