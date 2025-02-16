@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace JobCode.Core.Services
 {
-    interface IAuthService
+    public interface IAuthService
     {
+        string GenerateToken(string email, string role);
     }
 }
