@@ -33,3 +33,8 @@ node_modules/
 # Arquivos gerados pelo sistema operacional
 .DS_Store
 Thumbs.db
+
+# Ignorar somente o appsettings de desenvolvimento
+JobCode.Api/appsettings.Development.json
+
+

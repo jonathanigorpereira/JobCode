@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JobCode.CrossCutting\JobCode.CrossCutting.csproj" />
+    <Folder Include="NovaPasta\" />
   </ItemGroup>
 
 </Project>
