@@ -31,11 +31,11 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore JobCode.sln
 
       # Certifique-se de que o caminho do arquivo de solução ou projeto esteja correto.
       - name: Build project (antes da análise)
-        run: dotnet build YourSolution.sln
+        run: dotnet build JobCode.sln
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
