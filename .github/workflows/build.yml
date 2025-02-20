@@ -1,67 +1,48 @@
-name: Build
-
+name: SonarQube
 on:
   push:
     branches:
       - main
-
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Build and analyze
-    runs-on: ubuntu-latest
-    services:
-      sonarqube:
-        image: sonarqube:community
-        ports:
-          - 9000:9000
-        options: >-
-          --health-cmd="curl --fail http://localhost:9000 || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-
+    runs-on: windows-latest
     steps:
+      - name: Setup .NET
+        uses: actions/setup-java@v4
+        with:
+          dotnet-versionn: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Para uma análise mais completa
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Restore dependencies
-        run: dotnet restore JobCode/JobCode.sln
-
-      - name: Build project (antes da análise)
-        run: dotnet build JobCode/JobCode.sln
-
-      - name: Cache SonarQube packages
+          fetch-depth: 0 
+      - name: Cache SonarQube Cloud packages
         uses: actions/cache@v4
         with:
-          path: ~/.sonar/cache
+          path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache SonarQube scanner
+      - name: Cache SonarQube Cloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v4
         with:
-          path: ./.sonar/scanner
+          path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
-
-      - name: Install SonarQube scanner
+      - name: Install SonarQube Cloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
         run: |
-          mkdir -p ./.sonar/scanner
-          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-
-      - name: Begin SonarQube analysis
-        run: ./.sonar/scanner/dotnet-sonarscanner begin /k:"JobCode" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-      - name: Build project (para análise)
-        run: dotnet build JobCode/JobCode.sln
-
-      - name: End SonarQube analysis
-        run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"jonathanigorpereira_JobCode" /o:"jonathanigorpereira" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
