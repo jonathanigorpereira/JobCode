@@ -5,45 +5,42 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace JobCode.CrossCutting.Auth
+namespace JobCode.CrossCutting.Auth;
+
+public class AuthService(IConfiguration _configuration) : IAuthService
 {
-    public class AuthService: IAuthService
+    public string GenerateToken(string email, string role)
     {
-        private readonly IConfiguration _configuration;
-        public AuthService(IConfiguration configuration)
-        {
-            _configuration = configuration;     
-        }
+        var issuer = _configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Issuer não configurado");
+        var audience = _configuration["Jwt:Audience"] ?? throw new InvalidOperationException("Audience não configurado");
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("Chave JWT não configurada"));
 
-        public string GenerateToken(string email, string role)
-        {
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
-            var key = _configuration["Jwt:Key"]
-                    ?? throw new ArgumentException("A chave JWT não está configurada corretamente.");
+        #pragma warning disable S6781
+        var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
+        #pragma warning restore S6781
 
-
-            var jwtKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-
-            var credentials = new SigningCredentials(jwtKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new List<Claim>
+        var claims = new List<Claim>
             {
                  new Claim("username", email),
                  new Claim(JwtRegisteredClaimNames.Sub, email),
-                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                 new Claim(ClaimTypes.Role, role)
+                 new Claim(JwtRegisteredClaimNames.Email, email),
+                 new Claim(ClaimTypes.Role, role),
+                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            
-            var expireDate = DateTime.Now.AddHours(2);
-            var notBefore = DateTime.Now.AddMinutes(-1);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Issuer = issuer,
+            Audience = audience,
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.Now.AddHours(2),
+            NotBefore = DateTime.UtcNow.AddMinutes(-1),
+            SigningCredentials = credentials
+        };
 
-            var token = new JwtSecurityToken(issuer,audience,claims, notBefore, expireDate, credentials);
-
-            var tokenGenerated = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return tokenGenerated;
-        }
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }
+
