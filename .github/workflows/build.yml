@@ -31,7 +31,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore cd JobCode
 
       # Certifique-se de que o caminho do arquivo de solução ou projeto esteja correto.
       - name: Build project (antes da análise)
