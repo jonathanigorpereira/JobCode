@@ -31,11 +31,10 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore cd JobCode
+        run: dotnet restore JobCode/JobCode.sln
 
-      # Certifique-se de que o caminho do arquivo de solução ou projeto esteja correto.
       - name: Build project (antes da análise)
-        run: dotnet build JobCode.sln
+        run: dotnet build JobCode/JobCode.sln
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
@@ -61,9 +60,8 @@ jobs:
       - name: Begin SonarQube analysis
         run: ./.sonar/scanner/dotnet-sonarscanner begin /k:"JobCode" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
-      # Realiza a build novamente para que o SonarQube consiga coletar os dados
       - name: Build project (para análise)
-        run: dotnet build YourSolution.sln
+        run: dotnet build JobCode/JobCode.sln
 
       - name: End SonarQube analysis
         run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
