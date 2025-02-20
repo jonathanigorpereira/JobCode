@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Setup .NET
-        uses: actions/setup-java@v4
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-versionn: 8.0.x
       - name: Restore dependencies
