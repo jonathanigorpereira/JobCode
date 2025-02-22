@@ -1,4 +1,4 @@
-﻿namespace JobCode.Infrastructure.CrossCutting.Results
+﻿namespace JobCode.Application.Results
 {
     public class Result<T>
     {
@@ -13,7 +13,7 @@
         public bool IsFailure => !IsSuccess;
         public string Message { get; private set; }
         public T Results { get; private set; }
-       
+
         public static Result<T?> Success(T? results)
             => new Result<T?>(results, true, string.Empty);
 

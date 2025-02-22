@@ -1,13 +1,11 @@
 using JobCode.Api.ExceptionHandlers;
-using JobCode.CrossCutting;
-using Microsoft.AspNetCore.Diagnostics;
+using JobCode.Infrastructure;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddCrossCutting();
+    .AddInfrastructure(builder.Configuration);
 
 
 builder.Services.AddControllers();

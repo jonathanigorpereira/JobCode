@@ -1,10 +1,8 @@
 ﻿using JobCode.Core.Services;
-using JobCode.CrossCutting.Auth;
-using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace JobCode.CrossCutting.Auth
+namespace JobCode.Infrastructure.Auth
 {
     public class EncryptionService : IEncryptionService
     {

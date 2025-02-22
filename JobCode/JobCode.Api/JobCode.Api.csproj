@@ -18,8 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JobCode.Application\JobCode.Application.csproj" />
-    <ProjectReference Include="..\JobCode.CrossCutting\JobCode.Infrastructure.CrossCutting.csproj" />
-    <ProjectReference Include="..\JobCode.Data\JobCode.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\JobCode.Data\JobCode.Infrastructure.csproj" />
     <ProjectReference Include="..\JobCode.Domain\JobCode.Core.csproj" />
   </ItemGroup>
 
