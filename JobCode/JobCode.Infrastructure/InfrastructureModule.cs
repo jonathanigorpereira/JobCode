@@ -5,6 +5,7 @@ using Amazon.Extensions.NETCore.Setup;
 using JobCode.Core.Entities;
 using JobCode.Core.Services;
 using JobCode.Infrastructure.Auth;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace JobCode.Infrastructure
@@ -43,6 +44,12 @@ namespace JobCode.Infrastructure
             configuration.GetSection("JWT").Bind(settings);
 
             services.AddSingleton(settings);
+
+
+            var connectionStringConf = configuration.GetSection("JobCodeDb").Value ?? string.Empty;
+
+            services.AddDbContext<JobCodeDbContext>(o => o.UseSqlServer(connectionStringConf));
+
 
             return services;
         }
