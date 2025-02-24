@@ -1,4 +1,4 @@
-﻿using JobCode.Core.Entities;
+﻿using JobCode.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobCode.Api.Controllers
@@ -8,7 +8,7 @@ namespace JobCode.Api.Controllers
     public class UserController : ControllerBase
     {
         [HttpPost]
-        public IActionResult Register([FromBody] User user)
+        public IActionResult Register([FromBody] UserModel user)
         {
             if (user == null)
                 return BadRequest("O objeto de usuário é obrigatório.");
@@ -28,8 +28,7 @@ namespace JobCode.Api.Controllers
 
                 return StatusCode(StatusCodes.Status201Created, new
                 {
-                    Id = user.Id,
-                    Message = "Usuário registrado com sucesso!"
+                   Message = "Usuário registrado com sucesso!"
                 });
             }
             catch (Exception ex)

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JobCode.Core.Entities;
 
-namespace JobCode.Core.Repositories
+namespace JobCode.Core.Repositories;
+
+interface IUserRepository : IBaseRepository<User>
 {
-    interface IUserRepository
-    {
-    }
 }
+
