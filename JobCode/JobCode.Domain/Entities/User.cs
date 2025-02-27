@@ -3,45 +3,25 @@ using System.Text.Json.Serialization;
 
 namespace JobCode.Core.Entities;
 
-public class User : BaseEntity
+public class User(string firstName,
+            string lastName,
+            DateOnly birthDate,
+            string email,
+            string password,
+            string role,
+            bool active
+           ) : BaseEntity()
 {
-    public User()
-    {
-    }
+    public string FirstName { get; private set; } = firstName;
+    public string LastName { get; private set; } = lastName;
+    public DateOnly BirthDate { get; private set; } = birthDate;
+    public string Email { get; private set; } = email;
+    public string Password { get; private set; } = password;
+    public string Role { get; private set; } = role;
+    public bool Active { get; private set; } = active;
+    public Address Address { get; private set; }
 
-    public User(string firstName,
-                string lastName,
-                DateOnly birthDate,
-                string email,
-                string password,
-                UserType userType,
-                Address? address = null)
-        :base()
-    {
-        FirstName = firstName;
-        LastName = lastName;
-        BirthDate = birthDate;
-        Email = email;
-        Password = password;
-        UserType = userType;
-        Role = userType switch
-        {
-            UserType.Recruiter => "Recruiter",
-            UserType.Candidate => "Candidate",
-            _ => throw new ArgumentException("Tipo Inválido")
-        };
-        Active = true;
-        Address = address;
-    }
-
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public DateOnly BirthDate { get; private set; }
-    public string Email { get; private set; }
-    public string Password { get; private set; } 
-    public UserType UserType { get; private set; }
-    public string Role { get; private set; } 
-    public bool Active { get; private set; }
-    public Address? Address { get; private set; }
+    public void SetAddress(Address address)
+        => Address = address;
 }
 

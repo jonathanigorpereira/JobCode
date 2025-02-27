@@ -6,6 +6,8 @@ using JobCode.Core.Entities;
 using JobCode.Core.Services;
 using JobCode.Infrastructure.Auth;
 using Microsoft.EntityFrameworkCore;
+using JobCode.Core.Repositories;
+using JobCode.Infrastructure.Repositories;
 
 
 namespace JobCode.Infrastructure
@@ -57,6 +59,8 @@ namespace JobCode.Infrastructure
         public static IServiceCollection AddRepositorie(this IServiceCollection services)
         {
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IEncryptionService, EncryptionService>();
+            services.AddTransient<IUserRepository,UserRepository>();
             return services;
         }
     }

@@ -1,6 +1,26 @@
-@JobCode.Api_HostAddress = http://localhost:5206
+@JobCode.Api_HostAddress = https://localhost:7074/api
 
-GET {{JobCode.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{JobCode.API_HostAddress}}/User/register
+Content-Type: application/json
 
-###
+{
+  "firstName": "Jonathan",
+  "lastName": "Pereira",
+  "birthDate": "2025-02-25",
+  "email": "jonathan@jonathan",
+  "password": "123467",
+  "userType": 1,
+  "active": true,
+  "address": {
+    "postalCode": "88037-010",
+    "avenue": "Joe Collaco",
+    "street": "Joe Collaco",
+    "district": "Corrego Grande",
+    "localNumber": 125,
+    "complement": 208,
+    "city": "Floripa",
+    "state": "SC",
+    "country": "BR"
+  }
+}
+

@@ -3,13 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JobCode.Infrastructure;
 
-public class JobCodeDbContext : DbContext
+public class JobCodeDbContext(DbContextOptions<JobCodeDbContext> options) : DbContext(options)
 {
-    public JobCodeDbContext(DbContextOptions<JobCodeDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

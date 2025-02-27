@@ -6,9 +6,9 @@ namespace JobCode.Core.Repositories
     {
         Task<List<T>> GetAllAsync(CancellationToken cancellationToken);
         Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken);
-        Task<bool> AddAsync(T entity, CancellationToken cancellationToken);
+        Task<int> AddAsync(T entity, CancellationToken cancellationToken);
         Task UpdateAsync(T entity, CancellationToken cancellationToken);
         Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken);
-        Task<bool> Exists(int id, CancellationToken cancellationToken);
+        Task<bool> ExistsAsync(int id, CancellationToken cancellationToken);
     }
 }

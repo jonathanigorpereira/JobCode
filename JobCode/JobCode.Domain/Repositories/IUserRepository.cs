@@ -2,7 +2,13 @@
 
 namespace JobCode.Core.Repositories;
 
-interface IUserRepository : IBaseRepository<User>
+public interface IUserRepository 
 {
+    Task<List<User>> GetAllAsync(CancellationToken cancellationToken);
+    Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<int> AddAsync(User entity, CancellationToken cancellationToken);
+    Task UpdateAsync(User entity, CancellationToken cancellationToken);
+    Task<bool> DeleteAsync(User entity, CancellationToken cancellationToken);
+    Task<bool> ExistsAsync(int id, CancellationToken cancellationToken);
 }
 

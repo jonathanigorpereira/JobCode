@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobCode.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(JobCodeDbContext))]
-    [Migration("20250224020105_migration_00001")]
-    partial class migration_00001
+    [Migration("20250225172626_migration_0001")]
+    partial class migration_0001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,10 +71,6 @@ namespace JobCode.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("UserType")
-                        .HasMaxLength(1)
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -154,7 +150,8 @@ namespace JobCode.Infrastructure.Persistence.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.Navigation("Address");
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

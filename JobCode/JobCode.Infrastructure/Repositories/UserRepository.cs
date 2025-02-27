@@ -3,11 +3,23 @@ using JobCode.Core.Repositories;
 
 namespace JobCode.Infrastructure.Repositories;
 
-public class UserRepository : IBaseRepository<User>
+public class UserRepository(JobCodeDbContext context) : IUserRepository
 {
-    public Task<bool> AddAsync(User entity, CancellationToken cancellationToken)
+    private readonly JobCodeDbContext _context = context;
+
+    public async Task<int> AddAsync(User entity, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _context.AddAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            return entity.Id;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException($"Erro ao registrar usuário: {ex.InnerException}");
+        }
+      
     }
 
     public Task<bool> DeleteAsync(User entity, CancellationToken cancellationToken)
@@ -15,7 +27,7 @@ public class UserRepository : IBaseRepository<User>
         throw new NotImplementedException();
     }
 
-    public Task<bool> Exists(int id, CancellationToken cancellationToken)
+    public Task<bool> ExistsAsync(int id, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

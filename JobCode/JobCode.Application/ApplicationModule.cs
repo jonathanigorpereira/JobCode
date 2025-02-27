@@ -1,4 +1,4 @@
-﻿using JobCode.Application.Mappings;
+﻿using JobCode.Application.Commands.InsertUser;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JobCode.Application
@@ -8,35 +8,24 @@ namespace JobCode.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services
-                .AddMapper()
-                .AddHandlers()
-                .AddValidation();
+                .AddHandlers();
+                //.AddValidation();
 
             return services;
         }
 
         private static IServiceCollection AddHandlers(this IServiceCollection services)
         {
-            //services.AddMediatR(config =>
-            //    config.RegisterServicesFromAssemblyContaining<>());
+            services
+                .AddMediatR(config =>
+                 config.RegisterServicesFromAssemblyContaining<InsertUserCommand>());
 
             return services;
         }
 
-        private static IServiceCollection AddValidation(this IServiceCollection services)
-        {
-            //services
-            //    .AddFluentValidationAutoValidation()
-            //    .AddValidatorsFromAssemblyContaining<InsertProjectCommand>();
-
-            return services;
-        }
-
-        private static IServiceCollection AddMapper(this IServiceCollection services)
-        {
-            services.AddAutoMapper(typeof(MappingProfile).Assembly);
-            return services;
-        }
-
+        //private static IServiceCollection AddValidation(this IServiceCollection services)
+        //{
+        //    return services;
+        //}
     }
 }

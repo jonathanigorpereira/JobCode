@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using JobCode.Application.Models;
+﻿using JobCode.Application.Models;
 using JobCode.Application.Result;
 using JobCode.Core.Entities;
 using JobCode.Core.Enums;
@@ -15,11 +14,18 @@ public class InsertUserCommand : IRequest<Result<int>>
     public string Email { get; set; }
     public string Password { get; set; }
     public UserType UserType { get; set; }
+    public string Role => UserType.ToString();
     public bool Active { get; set; }
-    public AddressModel Address { get; set; }
+    public Address Address { get; set; }
 
-    public User ToEntity(IMapper mapper)
-        => new (FirstName, LastName, BirthDate, Email, Password, UserType, mapper.Map<Address>(Address)); 
+    public User ToEntity()
+       => new(FirstName, LastName, BirthDate, Email, Password, Role, Active);
 
+    
+    public void SetPassword(string newPasswordHash)
+        => Password = newPasswordHash;
+
+  
+    
 }
 
