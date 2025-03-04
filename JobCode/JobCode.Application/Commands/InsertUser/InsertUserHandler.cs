@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using JobCode.Application.Result;
-using JobCode.Core.Entities;
-using JobCode.Core.Enums;
+﻿using JobCode.Application.Models;
 using JobCode.Core.Repositories;
 using JobCode.Core.Services;
 using MediatR;
+using System.Diagnostics;
 
 namespace JobCode.Application.Commands.InsertUser
 {
@@ -18,16 +16,23 @@ namespace JobCode.Application.Commands.InsertUser
             if (request == null)
                 return Result<int>.Failure("Não foram fornecidos dados para registrar o usuário.");
 
+
+
             var passwordHash = _encryptionService.EncryptingHash(request.Password);
             request.SetPassword(passwordHash);
 
-            var userT = request.ToEntity();
+            var user = request.ToEntity();
 
-            userT.SetAddress(request.Address);
+            user.SetAddress(request.Address);
+   
+            bool exists = await _repository.ExistUserAsync(user, cancellationToken);
 
-            var result = await _repository.AddAsync(userT, cancellationToken);
+            if (exists)
+                return Result<int>.Failure("Usuário já cadastrado.");
 
-            return Result<int>.Success(result);
+            var result = await _repository.AddAsync(user, cancellationToken);
+
+            return Result<int>.Success(result,"Usuário cadastrado com sucesso!");
         }
     }
 }

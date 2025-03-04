@@ -58,9 +58,12 @@ namespace JobCode.Infrastructure
 
         public static IServiceCollection AddRepositorie(this IServiceCollection services)
         {
+            services.AddScoped(typeof(IRepositoryBase<>),typeof(RepositoryBase<>));
+            services.AddScoped<IUserRepository,UserRepository>();
+
             services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<IEncryptionService, EncryptionService>();
-            services.AddTransient<IUserRepository,UserRepository>();
+            services.AddScoped<IEncryptionService, EncryptionService>();
+
             return services;
         }
     }

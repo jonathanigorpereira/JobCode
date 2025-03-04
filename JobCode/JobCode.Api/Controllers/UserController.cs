@@ -18,7 +18,10 @@ namespace JobCode.Api.Controllers
             {
                 var result = await _mediator.Send(model);
 
-                return NoContent();
+                if(result.IsFailure)
+                   return BadRequest(StatusCode(StatusCodes.Status406NotAcceptable, result.Message));
+
+                return Ok(StatusCode(StatusCodes.Status201Created, result.Message));
             }
             catch (Exception ex)
             {

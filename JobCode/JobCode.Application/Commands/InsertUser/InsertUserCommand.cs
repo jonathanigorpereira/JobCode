@@ -1,5 +1,4 @@
 ﻿using JobCode.Application.Models;
-using JobCode.Application.Result;
 using JobCode.Core.Entities;
 using JobCode.Core.Enums;
 using MediatR;
