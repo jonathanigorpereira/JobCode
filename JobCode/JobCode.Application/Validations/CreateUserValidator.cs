@@ -31,9 +31,10 @@ public class CreateUserValidator : AbstractValidator<UserModel>
         RuleFor(u => u.Password)
             .NotEmpty()
                 .WithMessage("A senha é obrigatória")
-                .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$")
-            .MinimumLength(6)
-                .WithMessage("A senha deve conter no mínimo 6 caracteres");
+            .MinimumLength(8)
+                .WithMessage("A senha deve conter no mínimo 8 caracteres")
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
+                .WithMessage("A senha deve conter pelo menos uma letra minúscula, uma maiúscula, um número e um caractere especial");
 
         RuleFor(U => U.Address)
             .NotNull()
@@ -41,7 +42,7 @@ public class CreateUserValidator : AbstractValidator<UserModel>
             .When(u => u.UserType == UserType.Candidate);
 
         RuleFor(u => u.Address)
-          .SetValidator(new AddressValidator())
+          .SetValidator(new AddressValidator()!)
           .When(u => u.UserType == UserType.Candidate && u.Address != null);
     }
 

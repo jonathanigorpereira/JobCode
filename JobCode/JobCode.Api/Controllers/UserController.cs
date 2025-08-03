@@ -14,19 +14,17 @@ namespace JobCode.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] InsertUserCommand model)
         {
-            try
+            if (model == null)
             {
-                var result = await _mediator.Send(model);
-
-                if(result.IsFailure)
-                   return BadRequest(StatusCode(StatusCodes.Status406NotAcceptable, result.Message));
-
-                return Ok(StatusCode(StatusCodes.Status201Created, result.Message));
+                return BadRequest("Invalid user data");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao registrar usuário: {ex.Message}");
-            }
+
+            var result = await _mediator.Send(model);
+
+            if (result.IsFailure)
+                return BadRequest(result.Message);
+
+            return CreatedAtAction(nameof(RegisterAsync), new { message = result.Message });
         }
     }
 }

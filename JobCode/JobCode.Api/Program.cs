@@ -16,9 +16,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-
-builder.Services.AddControllers();
-
 builder.Services.AddCors();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -36,7 +33,20 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+// Configure CORS - restrict in production
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+}
+else
+{
+    // In production, specify allowed origins
+    app.UseCors(x => x
+        .WithOrigins("https://your-domain.com") // Replace with actual domain
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials());
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

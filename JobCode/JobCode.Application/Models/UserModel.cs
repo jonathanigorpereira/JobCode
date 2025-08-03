@@ -9,5 +9,5 @@ public record UserModel(string FirstName,
                         string Password,
                         UserType UserType,
                         bool Active,
-                        AddressModel Address);
+                        AddressModel? Address);
 

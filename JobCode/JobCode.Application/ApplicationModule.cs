@@ -1,4 +1,5 @@
 ﻿using JobCode.Application.Commands.InsertUser;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JobCode.Application
@@ -8,8 +9,8 @@ namespace JobCode.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services
-                .AddHandlers();
-                //.AddValidation();
+                .AddHandlers()
+                .AddValidation();
 
             return services;
         }
@@ -23,9 +24,10 @@ namespace JobCode.Application
             return services;
         }
 
-        //private static IServiceCollection AddValidation(this IServiceCollection services)
-        //{
-        //    return services;
-        //}
+        private static IServiceCollection AddValidation(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssemblyContaining<InsertUserCommand>();
+            return services;
+        }
     }
 }

@@ -23,9 +23,9 @@ public class ExceptionHandler(ILogger<ExceptionHandler> logger,
 
         httpContext.Response.ContentType = "application/json";
 
-        var isDevelotment = _env.IsDevelopment();
+        var isDevelopment = _env.IsDevelopment();
 
-        var details = isDevelotment ? exception.StackTrace : "";
+        var details = isDevelopment ? exception.StackTrace : "";
 
         var problemsDetails = new ProblemDetails
         {

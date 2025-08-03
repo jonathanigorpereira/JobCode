@@ -17,7 +17,7 @@ namespace JobCode.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
             services
-                .AddRepositorie()
+                .AddRepositories()
                 .AddSecrets(configuration)
                 .AddData(configuration);
 
@@ -47,16 +47,21 @@ namespace JobCode.Infrastructure
 
             services.AddSingleton(settings);
 
+            var connectionString = configuration.GetConnectionString("JobCodeDb") 
+                ?? configuration.GetSection("JobCodeDb").Value 
+                ?? throw new InvalidOperationException("Database connection string 'JobCodeDb' not found.");
 
-            var connectionStringConf = configuration.GetSection("JobCodeDb").Value ?? string.Empty;
-
-            services.AddDbContext<JobCodeDbContext>(o => o.UseSqlServer(connectionStringConf));
-
+            services.AddDbContext<JobCodeDbContext>(options => 
+            {
+                options.UseSqlServer(connectionString);
+                options.EnableSensitiveDataLogging(false); // Disable in production
+                options.EnableDetailedErrors(false); // Disable in production
+            });
 
             return services;
         }
 
-        public static IServiceCollection AddRepositorie(this IServiceCollection services)
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepositoryBase<>),typeof(RepositoryBase<>));
             services.AddScoped<IUserRepository,UserRepository>();

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.AspNetCore;
 using JobCode.Application.Models;
 
 namespace JobCode.Application.Validations;
@@ -36,8 +35,8 @@ public class AddressValidator : AbstractValidator<AddressModel>
                 .WithMessage("O número local deve ser menor ou igual a 9999");
 
         RuleFor(a => a.Complement)
-           .Length(10)
-                .WithMessage("O complemento deve conter no máximo 10 caracteres");
+           .MaximumLength(100)
+                .WithMessage("O complemento deve conter no máximo 100 caracteres");
 
         RuleFor(a => a.City)
           .MaximumLength(100)
